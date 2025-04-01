@@ -77,9 +77,9 @@ else
 fi
 
 # Friendly alias prompt
-echo "🆔 Server name:"
-read SERVER_NAME
-HOST_ALIAS="$HOST_KIND.$SERVER_NAME.com"
+echo "🆔 Host name:"
+read HOST
+HOST_ALIAS="$HOST_KIND.$HOST.com"
 
 # Secretive public key or non-Secretive setup
 if [ "$USE_SECRETIVE" = true ]; then
@@ -88,8 +88,8 @@ if [ "$USE_SECRETIVE" = true ]; then
 else
   # Non-Secretive setup, generate SSH key
   echo "🔑 Generating SSH key (no Secretive used)..."
-  ssh-keygen -t ed25519 -C "$HOST_ALIAS@$HOST_NAME.local ([$SERVER_NAME] Server Key - $(date +%Y-%m-%d))" -f "$HOME_DIR/.ssh/id_ed25519_${HOST_KIND}_${SERVER_NAME}"
-  IDENTITY_FILE="$HOME_DIR/.ssh/id_ed25519_${HOST_KIND}_${SERVER_NAME}"
+  ssh-keygen -t ed25519 -C "$HOST_ALIAS@$HOST_NAME.local ([$HOST] Server Key - $(date +%Y-%m-%d))" -f "$HOME_DIR/.ssh/id_ed25519_${HOST_KIND}_${HOST}"
+  IDENTITY_FILE="$HOME_DIR/.ssh/id_ed25519_${HOST_KIND}_${HOST}"
   echo "✅ SSH key generated at $IDENTITY_FILE.pub"
 fi
 
@@ -178,7 +178,7 @@ if [[ "$HOST_KIND" == "ssh" && "$USE_SECRETIVE" = true ]]; then
     ssh "$HOST_ALIAS" "
       mkdir -p ~/.ssh && chmod 700 ~/.ssh
       touch ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys
-      echo \"$(cat $IDENTITY_FILE) $HOST_ALIAS@$HOST_NAME.secretive.local ([$SERVER_NAME] Server Key - $(date +%Y-%m-%d))\" >> ~/.ssh/authorized_keys
+      echo \"$(cat $IDENTITY_FILE) $HOST_ALIAS@$HOST_NAME.secretive.local ([$HOST] Server Key - $(date +%Y-%m-%d))\" >> ~/.ssh/authorized_keys
     "
     echo "✅ Public key uploaded successfully!"
   else
