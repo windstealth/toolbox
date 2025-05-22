@@ -33,6 +33,7 @@ sudo chmod 600 "$SSH_CONFIG"
 if ! grep -q "Host *" "$SSH_CONFIG"; then
   echo "🧱 Adding global SSH settings at top..."
   GLOBAL_BLOCK="Host *
+    IdentitiesOnly yes
     ServerAliveCountMax 3
     ServerAliveInterval 60
 "
